@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { FiMenu, FiX } from "react-icons/fi"
 
 const navLinks = [
@@ -12,15 +12,39 @@ const navLinks = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [active, setActive] = useState("")
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+
+      const sections = navLinks.map((link) =>
+        document.querySelector(link.href)
+      )
+
+      sections.forEach((section) => {
+        if (!section) return
+        const rect = section.getBoundingClientRect()
+        if (rect.top <= 100 && rect.bottom >= 100) {
+          setActive("#" + section.id)
+        }
+      })
+    }
+
+    handleScroll()
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200">
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-white shadow-sm border-b border-gray-200" : "bg-white border-b border-gray-200"}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
           <a href="#" className="text-xl font-black tracking-tight text-black">
-            Temiloluwa<span className="text-red-600">.</span>
+            Temi<span className="text-red-600">.</span>
           </a>
 
           {/* Desktop Links */}
@@ -29,7 +53,11 @@ export default function Navbar() {
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="text-sm font-medium text-gray-600 hover:text-black transition-colors duration-200"
+                  className={`text-sm font-medium transition-colors duration-200 ${
+                    active === link.href
+                      ? "text-red-600 font-semibold"
+                      : "text-gray-600 hover:text-black"
+                  }`}
                 >
                   {link.label}
                 </a>
@@ -64,7 +92,11 @@ export default function Navbar() {
                 <a
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="text-base font-medium text-gray-700 hover:text-black transition-colors duration-200"
+                  className={`text-base font-medium transition-colors duration-200 ${
+                    active === link.href
+                      ? "text-red-600 font-semibold"
+                      : "text-gray-700 hover:text-black"
+                  }`}
                 >
                   {link.label}
                 </a>

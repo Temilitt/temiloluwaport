@@ -13,7 +13,7 @@ const testimonials = [
   },
   {
     name: "Mr John",
-    role: "Supervisor, Doornet — Frontend Internship",
+    role: "Founder, Doornet — Frontend Internship",
     initial: "J",
     text: "Temi is straightforward and hardworking. He collaborates seamlessly with backend developers and product designers without friction. He understands the full picture, not just his own lane.",
   },

@@ -10,6 +10,7 @@ import Testimonials from "./components/Testimonials"
 import Experience from "./components/Experience"
 import Contact from "./components/Contact"
 import Footer from "./components/Footer"
+import BackToTop from "./components/BackToTop"
 
 function App() {
   const [introDone, setIntroDone] = useState(false)
@@ -18,12 +19,7 @@ function App() {
     <div className="font-sans overflow-x-hidden">
       <Cursor />
       {!introDone && <Intro onDone={() => setIntroDone(true)} />}
-      <div
-        style={{
-          opacity: introDone ? 1 : 0,
-          transition: "opacity 0.8s ease",
-        }}
-      >
+      <div style={{ opacity: introDone ? 1 : 0, transition: "opacity 0.8s ease" }}>
         <Navbar />
         <Hero />
         <About />
@@ -33,6 +29,7 @@ function App() {
         <Experience />
         <Contact />
         <Footer />
+        <BackToTop />
       </div>
     </div>
   )
