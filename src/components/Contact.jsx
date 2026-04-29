@@ -1,11 +1,10 @@
 import { useState } from "react"
-import emailjs from "@emailjs/browser"
 import { FiGithub, FiLinkedin, FiTwitter, FiMail, FiSend } from "react-icons/fi"
 import { FaWhatsapp } from "react-icons/fa"
 import AnimateOnScroll from "./AnimateOnScroll"
 
 export default function Contact() {
-  const [form, setForm] = useState({ from_name: "", from_email: "", message: "" })
+  const [form, setForm] = useState({ name: "", email: "", message: "" })
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
@@ -21,20 +20,25 @@ export default function Contact() {
     setSuccess(false)
 
     try {
-      await emailjs.send(
-        "service_ub7uqkd",
-        "template_azgwurf",
-        {
-          from_name: form.from_name,
-          from_email: form.from_email,
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: "b3c3a16b-8329-43c0-af78-6f71a0150c6d",
+          name: form.name,
+          email: form.email,
           message: form.message,
-        },
-        "v8pKM14FgUGfR7dj0"
-      )
-      setSuccess(true)
-      setForm({ from_name: "", from_email: "", message: "" })
-    } catch (err) {
-      console.log(err)
+        }),
+      })
+
+      const data = await res.json()
+      if (data.success) {
+        setSuccess(true)
+        setForm({ name: "", email: "", message: "" })
+      } else {
+        setError(true)
+      }
+    } catch (_err) {
       setError(true)
     } finally {
       setLoading(false)
@@ -142,8 +146,8 @@ export default function Contact() {
                 <label className="text-xs text-gray-500 uppercase tracking-widest">Your Name</label>
                 <input
                   type="text"
-                  name="from_name"
-                  value={form.from_name}
+                  name="name"
+                  value={form.name}
                   onChange={handleChange}
                   required
                   placeholder="John Doe"
@@ -155,8 +159,8 @@ export default function Contact() {
                 <label className="text-xs text-gray-500 uppercase tracking-widest">Your Email</label>
                 <input
                   type="email"
-                  name="from_email"
-                  value={form.from_email}
+                  name="email"
+                  value={form.email}
                   onChange={handleChange}
                   required
                   placeholder="john@example.com"
