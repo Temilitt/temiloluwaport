@@ -62,7 +62,7 @@ export default function About() {
 
             {/* CTA */}
             <a
-              href="/Aderounmu_Temiloluwa_CV.pdf"
+              href="/Aderounmu_Temiloluwa_CV.docx"
               download
               className="inline-block w-fit bg-black text-white text-sm font-semibold px-7 py-3 rounded-full hover:bg-red-600 transition-colors duration-200 mt-2"
             >
